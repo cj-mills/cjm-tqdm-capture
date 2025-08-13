@@ -12,9 +12,12 @@ import time
 from typing import Optional, Callable
 from .progress_info import ProgressInfo
 
+from itertools import count
+_BAR_COUNTER = count(1)
+
 # %% ../nbs/patch_tqdm.ipynb 4
 def _make_callback_class(
-    BaseTqdm,  # Base tqdm class to extend with callback functionality
+    BaseTqdm,    # Base tqdm class to extend with callback functionality
     default_cb: Optional[Callable[[ProgressInfo], None]],
     min_update_interval: float = 0.1,  # Minimum time between callback invocations (seconds)
     min_delta_pct: float = 1.0,      # emit only if pct moves by >= this
@@ -34,6 +37,7 @@ def _make_callback_class(
             self._last_pct = -1.0
             self._last_n = -1 # remember last emitted n
             self._done_emitted = False
+            self._bar_id = f"bar-{next(_BAR_COUNTER)}"
             super().__init__(*args, **kwargs)
     
         def _emit(
@@ -82,7 +86,9 @@ def _make_callback_class(
                 elapsed=elapsed,
                 remaining=remaining,
                 description=self.desc or None,
-                raw_output=""
+                raw_output="",
+                bar_id=self._bar_id,                    # Unique identifier for this progress bar
+                position=getattr(self, 'position', 0),  # Display position for multi-bar scenarios
             ))
     
             self._last_n = self.n # mark last emitted step

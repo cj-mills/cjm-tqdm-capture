@@ -23,6 +23,8 @@ class ProgressInfo:
     description: Optional[str] = None    # Progress bar description/label
     raw_output: str = ""                 # Raw output string (if any)
     timestamp: float = None              # Unix timestamp when created
+    bar_id: Optional[str] = None         # Unique identifier for this progress bar
+    position: Optional[int] = None       # Display position for multi-bar scenarios
     
     def __post_init__(self):
         "Set timestamp to current time if not provided"
