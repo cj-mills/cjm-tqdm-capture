@@ -1,0 +1,9 @@
+project:
+  output-dir: _docs
+
+website:
+  title: "cjm-tqdm-capture"
+  site-url: "https://cj-mills.github.io/cjm-tqdm-capture"
+  description: "Intercept and capture progress information from tqdm progress bars via callbacks without modifying existing code."
+  repo-branch: main
+  repo-url: "https://github.com/cj-mills/cjm-tqdm-capture"
