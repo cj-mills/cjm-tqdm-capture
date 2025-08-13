@@ -109,7 +109,7 @@ def _make_callback_class(
 # %% ../nbs/patch_tqdm.ipynb 5
 @contextmanager
 def patch_tqdm(
-    progress_callback: Optional[Callable[[ProgressInfo], None]],
+    progress_callback: Optional[Callable[[ProgressInfo], None]],  # Function to call with progress updates
     min_update_interval: float = 0.1,  # Minimum time between callback invocations (seconds)
     min_delta_pct: float = 10.0,   # e.g., only every ~10%
     emit_initial: bool = False  # Whether to emit callback at 0% progress
