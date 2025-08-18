@@ -21,7 +21,7 @@ class ProgressMonitor:
         history_limit: int = 500  # Maximum number of historical updates to keep per job
     ):
         "Initialize a new progress monitor with optional history tracking"
-        self._lock = threading.Lock()
+        self._lock = threading.RLock()  # Use RLock instead of Lock to allow recursive locking
         self._jobs: Dict[str, Dict[str, Any]] = {}
         self.keep_history = keep_history
         self.history_limit = history_limit
@@ -31,6 +31,7 @@ class ProgressMonitor:
         job_id: str,  # Unique identifier for the job being tracked
         info: ProgressInfo  # Progress information update for the job
     ):
+        "TODO: Add function description"
         now = time.time()
         with self._lock:
             job = self._jobs.setdefault(job_id, {

@@ -17,7 +17,7 @@ _BAR_COUNTER = count(1)
 
 # %% ../nbs/patch_tqdm.ipynb 4
 def _make_callback_class(
-    BaseTqdm,    # Base tqdm class to extend with callback functionality
+    BaseTqdm: type,  # Base tqdm class to extend with callback functionality
     default_cb: Optional[Callable[[ProgressInfo], None]],
     min_update_interval: float = 0.1,  # Minimum time between callback invocations (seconds)
     min_delta_pct: float = 1.0,      # emit only if pct moves by >= this

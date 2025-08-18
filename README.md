@@ -123,7 +123,7 @@ from cjm_tqdm_capture.patch_tqdm import (
 
 ``` python
 def _make_callback_class(
-    BaseTqdm,    # Base tqdm class to extend with callback functionality
+    BaseTqdm: type,  # Base tqdm class to extend with callback functionality
     default_cb: Optional[Callable[[ProgressInfo], None]],
     min_update_interval: float = 0.1,  # Minimum time between callback invocations (seconds)
     min_delta_pct: float = 1.0,      # emit only if pct moves by >= this
@@ -157,8 +157,26 @@ _BAR_COUNTER
 
 ``` python
 from cjm_tqdm_capture.progress_info import (
-    ProgressInfo
+    ProgressInfo,
+    serialize_job_snapshot,
+    serialize_all_jobs
 )
+```
+
+#### Functions
+
+``` python
+def serialize_job_snapshot(
+    snapshot: Optional[Dict[str, Any]]  # Job snapshot dictionary from ProgressMonitor
+) -> Optional[Dict[str, Any]]:  # JSON-serializable dictionary or None if input is None
+    "Convert a job snapshot with ProgressInfo objects to a JSON-serializable format."
+```
+
+``` python
+def serialize_all_jobs(
+    jobs: Dict[str, Dict[str, Any]]  # Dictionary mapping job IDs to job snapshots
+) -> Dict[str, Optional[Dict[str, Any]]]:  # Dictionary mapping job IDs to serialized snapshots
+    "Convert all jobs from monitor.all() to JSON-serializable format."
 ```
 
 #### Classes
@@ -180,6 +198,11 @@ class ProgressInfo:
     bar_id: Optional[str]  # Unique identifier for this progress bar
     position: Optional[int]  # Display position for multi-bar scenarios
     
+    def to_dict(self):
+            """Convert to dictionary for JSON serialization"""
+            return {
+                'progress': self.progress,
+        "Convert to dictionary for JSON serialization"
 ```
 
 ### progress monitor (`progress_monitor.ipynb`)
@@ -218,6 +241,7 @@ class ProgressMonitor:
             job_id: str,  # Unique identifier for the job being tracked
             info: ProgressInfo  # Progress information update for the job
         )
+        "TODO: Add function description"
     
     def snapshot(
             self,
