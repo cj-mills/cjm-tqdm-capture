@@ -1,6 +1,6 @@
 # FastHTML SSE Progress Tracking Patterns
 
-This document captures lessons learned from integrating `cjm-tqdm-capture` with FastHTML's SSE support, based on updating the `01_basic_example.ipynb` notebook.
+This document captures lessons learned from integrating `cjm-tqdm-capture` with FastHTML's SSE support.
 
 ## Key Lessons Learned
 
