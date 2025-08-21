@@ -438,7 +438,7 @@ FastHTML supports the HTMX SSE extension.
 
 ```python
 import random
-hdrs=(Script(src="https://unpkg.com//sse.js"),)
+hdrs=(Script(src="https://unpkg.com/htmx-ext-sse@2.2.3/sse.js"),)
 app,rt = fast_app(hdrs=hdrs)
 
 @rt
