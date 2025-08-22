@@ -42,4 +42,6 @@ d = { 'settings': { 'branch': 'main',
                                                    'cjm_tqdm_capture.progress_monitor.ProgressMonitor.update': ( 'progress_monitor.html#progressmonitor.update',
                                                                                                                  'cjm_tqdm_capture/progress_monitor.py')},
             'cjm_tqdm_capture.streaming': { 'cjm_tqdm_capture.streaming.sse_stream': ( 'streaming.html#sse_stream',
-                                                                                       'cjm_tqdm_capture/streaming.py')}}}
+                                                                                       'cjm_tqdm_capture/streaming.py'),
+                                            'cjm_tqdm_capture.streaming.sse_stream_async': ( 'streaming.html#sse_stream_async',
+                                                                                             'cjm_tqdm_capture/streaming.py')}}}

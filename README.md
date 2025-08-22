@@ -31,8 +31,8 @@ graph LR
     streaming[streaming<br/>streaming]
 
     job_runner --> patch_tqdm
-    job_runner --> progress_monitor
     job_runner --> progress_info
+    job_runner --> progress_monitor
     patch_tqdm --> progress_info
     progress_monitor --> patch_tqdm
     progress_monitor --> progress_info
@@ -270,7 +270,8 @@ class ProgressMonitor:
 
 ``` python
 from cjm_tqdm_capture.streaming import (
-    sse_stream
+    sse_stream,
+    sse_stream_async
 )
 ```
 
