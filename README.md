@@ -36,8 +36,8 @@ graph LR
     patch_tqdm --> progress_info
     progress_monitor --> patch_tqdm
     progress_monitor --> progress_info
-    streaming --> progress_monitor
     streaming --> job_runner
+    streaming --> progress_monitor
 ```
 
 *8 cross-module dependencies detected*
@@ -288,6 +288,24 @@ def sse_stream(
 ) -> Iterator[str]:  # SSE-formatted strings ready to send to client
     """
     Framework-agnostic SSE generator.
+    - Yields 'data: {json}\n\n' when progress changes.
+    - Sends ': keep-alive' comments every `heartbeat` seconds when idle.
+    - If `wait_for_start` is True, it will wait up to `start_timeout` for
+      the first snapshot before ending (avoids race at job startup).
+    """
+```
+
+``` python
+async def sse_stream_async(
+    monitor: ProgressMonitor,  # Progress monitor instance to read job updates from
+    job_id: str,  # Unique identifier of the job to stream
+    interval: float = 0.25,  # Polling interval in seconds for checking progress updates
+    heartbeat: float = 15.0,  # Seconds between keep-alive messages when no updates
+    wait_for_start: bool = True,  # Whether to wait for job to start before ending stream
+    start_timeout: float = 5.0,  # Maximum seconds to wait for job to start if wait_for_start is True
+) -> AsyncIterator[str]:  # SSE-formatted strings ready to send to client
+    """
+    Async version of SSE generator for frameworks that require async iteration.
     - Yields 'data: {json}\n\n' when progress changes.
     - Sends ': keep-alive' comments every `heartbeat` seconds when idle.
     - If `wait_for_start` is True, it will wait up to `start_timeout` for
