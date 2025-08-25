@@ -30,14 +30,14 @@ graph LR
     progress_monitor[progress_monitor<br/>progress monitor]
     streaming[streaming<br/>streaming]
 
-    job_runner --> patch_tqdm
-    job_runner --> progress_info
     job_runner --> progress_monitor
+    job_runner --> progress_info
+    job_runner --> patch_tqdm
     patch_tqdm --> progress_info
-    progress_monitor --> patch_tqdm
     progress_monitor --> progress_info
-    streaming --> job_runner
+    progress_monitor --> patch_tqdm
     streaming --> progress_monitor
+    streaming --> job_runner
 ```
 
 *8 cross-module dependencies detected*
