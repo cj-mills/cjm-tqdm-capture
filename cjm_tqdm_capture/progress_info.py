@@ -31,7 +31,9 @@ class ProgressInfo:
         if self.timestamp is None:
             self.timestamp = time.time()
     
-    def to_dict(self):
+    def to_dict(
+        self
+    ) -> dict: # Dictionary with all progress fields for JSON serialization
         """Convert to dictionary for JSON serialization"""
         return {
             'progress': self.progress,

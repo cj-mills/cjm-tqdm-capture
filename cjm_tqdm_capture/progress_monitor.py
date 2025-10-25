@@ -31,7 +31,7 @@ class ProgressMonitor:
         job_id: str,  # Unique identifier for the job being tracked
         info: ProgressInfo  # Progress information update for the job
     ):
-        "TODO: Add function description"
+        """Record a progress update for a job and recompute its completion status"""
         now = time.time()
         with self._lock:
             job = self._jobs.setdefault(job_id, {

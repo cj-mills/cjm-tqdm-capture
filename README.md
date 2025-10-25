@@ -30,12 +30,12 @@ graph LR
     progress_monitor[progress_monitor<br/>progress monitor]
     streaming[streaming<br/>streaming]
 
-    job_runner --> progress_monitor
-    job_runner --> progress_info
     job_runner --> patch_tqdm
+    job_runner --> progress_info
+    job_runner --> progress_monitor
     patch_tqdm --> progress_info
-    progress_monitor --> progress_info
     progress_monitor --> patch_tqdm
+    progress_monitor --> progress_info
     streaming --> progress_monitor
     streaming --> job_runner
 ```
@@ -128,7 +128,7 @@ def _make_callback_class(
     min_update_interval: float = 0.1,  # Minimum time between callback invocations (seconds)
     min_delta_pct: float = 1.0,      # emit only if pct moves by >= this
     emit_initial: bool = False       # whether to emit at 0%
-)
+) -> type: # Extended tqdm class with callback support
     "Create a tqdm subclass that emits progress callbacks during iteration"
 ```
 
@@ -139,7 +139,7 @@ def patch_tqdm(
     min_update_interval: float = 0.1,  # Minimum time between callback invocations (seconds)
     min_delta_pct: float = 10.0,   # e.g., only every ~10%
     emit_initial: bool = False  # Whether to emit callback at 0% progress
-)
+): # Context manager that temporarily patches tqdm modules
     "Context manager that patches tqdm to emit progress callbacks"
 ```
 
@@ -198,10 +198,9 @@ class ProgressInfo:
     bar_id: Optional[str]  # Unique identifier for this progress bar
     position: Optional[int]  # Display position for multi-bar scenarios
     
-    def to_dict(self):
-            """Convert to dictionary for JSON serialization"""
-            return {
-                'progress': self.progress,
+    def to_dict(
+            self
+        ) -> dict: # Dictionary with all progress fields for JSON serialization
         "Convert to dictionary for JSON serialization"
 ```
 
@@ -241,7 +240,7 @@ class ProgressMonitor:
             job_id: str,  # Unique identifier for the job being tracked
             info: ProgressInfo  # Progress information update for the job
         )
-        "TODO: Add function description"
+        "Record a progress update for a job and recompute its completion status"
     
     def snapshot(
             self,

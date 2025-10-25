@@ -22,7 +22,7 @@ def _make_callback_class(
     min_update_interval: float = 0.1,  # Minimum time between callback invocations (seconds)
     min_delta_pct: float = 1.0,      # emit only if pct moves by >= this
     emit_initial: bool = False       # whether to emit at 0%
-):
+) -> type: # Extended tqdm class with callback support
     "Create a tqdm subclass that emits progress callbacks during iteration"
     class CallbackTqdm(BaseTqdm):
         "Extended tqdm class that invokes callbacks with progress information"
@@ -119,7 +119,7 @@ def patch_tqdm(
     min_update_interval: float = 0.1,  # Minimum time between callback invocations (seconds)
     min_delta_pct: float = 10.0,   # e.g., only every ~10%
     emit_initial: bool = False  # Whether to emit callback at 0% progress
-):
+): # Context manager that temporarily patches tqdm modules
     "Context manager that patches tqdm to emit progress callbacks"
     modules = ['tqdm', 'tqdm.std', 'tqdm.auto', 'tqdm.notebook', 'tqdm.asyncio', 'tqdm.gui']
     originals, patched = {}, []
