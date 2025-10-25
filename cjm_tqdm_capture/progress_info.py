@@ -27,7 +27,7 @@ class ProgressInfo:
     position: Optional[int] = None       # Display position for multi-bar scenarios
     
     def __post_init__(self):
-        "Set timestamp to current time if not provided"
+        """Set timestamp to current time if not provided"""
         if self.timestamp is None:
             self.timestamp = time.time()
     
@@ -55,7 +55,7 @@ from typing import Dict, Any, List
 def serialize_job_snapshot(
     snapshot: Optional[Dict[str, Any]]  # Job snapshot dictionary from ProgressMonitor
 ) -> Optional[Dict[str, Any]]:  # JSON-serializable dictionary or None if input is None
-    """Convert a job snapshot with ProgressInfo objects to a JSON-serializable format."""
+    """Convert a job snapshot to JSON-serializable format"""
     if not snapshot:
         return None
     
@@ -85,7 +85,7 @@ def serialize_job_snapshot(
 def serialize_all_jobs(
     jobs: Dict[str, Dict[str, Any]]  # Dictionary mapping job IDs to job snapshots
 ) -> Dict[str, Optional[Dict[str, Any]]]:  # Dictionary mapping job IDs to serialized snapshots
-    """Convert all jobs from monitor.all() to JSON-serializable format."""
+    """Convert all jobs from monitor.all() to JSON-serializable format"""
     return {
         job_id: serialize_job_snapshot(job) 
         for job_id, job in jobs.items()

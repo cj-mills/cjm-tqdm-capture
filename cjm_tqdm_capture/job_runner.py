@@ -14,15 +14,12 @@ from .patch_tqdm import patch_tqdm
 
 # %% ../nbs/job_runner.ipynb 5
 class JobRunner:
-    """
-    Runs a callable in a background thread, patches tqdm inside the job,
-    and forwards ProgressInfo updates to a ProgressMonitor under job_id.
-    """
+    """Runs functions in background threads with automatic tqdm progress capture"""
     def __init__(
         self,
         monitor: ProgressMonitor  # Progress monitor instance to receive updates
     ):
-        "Initialize a job runner with a progress monitor"
+        """Initialize a job runner with a progress monitor"""
         self.monitor = monitor
         self._threads: Dict[str, threading.Thread] = {}
 
@@ -34,14 +31,14 @@ class JobRunner:
         patch_kwargs: Optional[Dict[str, Any]] = None,
         **kwargs
     ) -> threading.Thread:  # The thread running the job
-        "Start a job in a background thread with automatic tqdm patching"
+        """Start a job in a background thread with automatic tqdm patching"""
         patch_kwargs = patch_kwargs or {}
         def _target():
-            "Internal thread target that wraps the job function with tqdm patching"
+            """Internal thread target that wraps the job function with tqdm patching"""
             def cb(
                 info: ProgressInfo  # Progress update from the patched tqdm
             ):
-                "Callback to forward progress updates to the monitor"
+                """Callback to forward progress updates to the monitor"""
                 self.monitor.update(job_id, info)
             try:
                 with patch_tqdm(cb, **patch_kwargs):
@@ -58,7 +55,7 @@ class JobRunner:
         self,
         job_id: str  # Unique identifier of the job to check
     ) -> bool:  # True if the job thread is still running
-        "Check if a job's thread is still running"
+        """Check if a job's thread is still running"""
         t = self._threads.get(job_id)
         return bool(t and t.is_alive())
 
@@ -67,7 +64,7 @@ class JobRunner:
         job_id: str,  # Unique identifier of the job to wait for
         timeout: Optional[float] = None  # Maximum seconds to wait (None for indefinite)
     ) -> None:  # Returns when thread completes or timeout expires
-        "Wait for a job's thread to complete"
+        """Wait for a job's thread to complete"""
         t = self._threads.get(job_id)
         if t:
             t.join(timeout)

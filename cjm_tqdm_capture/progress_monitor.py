@@ -14,13 +14,13 @@ from .patch_tqdm import patch_tqdm
 
 # %% ../nbs/progress_monitor.ipynb 5
 class ProgressMonitor:
-    "Thread-safe monitor for tracking progress of multiple concurrent jobs"
+    """Thread-safe monitor for tracking progress of multiple concurrent jobs"""
     def __init__(
         self,
         keep_history: bool = False,  # Whether to maintain a history of progress updates
         history_limit: int = 500  # Maximum number of historical updates to keep per job
     ):
-        "Initialize a new progress monitor with optional history tracking"
+        """Initialize a new progress monitor with optional history tracking"""
         self._lock = threading.RLock()  # Use RLock instead of Lock to allow recursive locking
         self._jobs: Dict[str, Dict[str, Any]] = {}
         self.keep_history = keep_history
@@ -69,7 +69,7 @@ class ProgressMonitor:
         self,
         job_id: str  # Unique identifier of the job to snapshot
     ) -> Optional[Dict[str, Any]]:  # Job state dictionary or None if job not found
-        "Get a point-in-time snapshot of a specific job's progress state"
+        """Get a point-in-time snapshot of a specific job's progress state"""
         with self._lock:
             job = self._jobs.get(job_id)
             if not job:
@@ -87,7 +87,7 @@ class ProgressMonitor:
     def all(
         self
     ) -> Dict[str, Dict[str, Any]]:  # Dictionary mapping job IDs to their state snapshots
-        "Get snapshots of all tracked jobs"
+        """Get snapshots of all tracked jobs"""
         with self._lock:
             return {k: self.snapshot(k) for k in self._jobs.keys()}
 
@@ -95,7 +95,7 @@ class ProgressMonitor:
         self,
         older_than_seconds: float = 3600  # Age threshold in seconds for removing completed jobs
     ):
-        "Remove completed jobs that finished more than the specified seconds ago"
+        """Remove completed jobs that finished more than the specified seconds ago"""
         now = time.time()
         with self._lock:
             for k in [k for k,v in self._jobs.items()

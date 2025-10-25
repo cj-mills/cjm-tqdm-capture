@@ -23,11 +23,11 @@ def _make_callback_class(
     min_delta_pct: float = 1.0,      # emit only if pct moves by >= this
     emit_initial: bool = False       # whether to emit at 0%
 ) -> type: # Extended tqdm class with callback support
-    "Create a tqdm subclass that emits progress callbacks during iteration"
+    """Create a tqdm subclass that emits progress callbacks during iteration"""
     class CallbackTqdm(BaseTqdm):
-        "Extended tqdm class that invokes callbacks with progress information"
+        """Extended tqdm class that invokes callbacks with progress information"""
         def __init__(self, *args, **kwargs):
-            "Initialize CallbackTqdm with callback configuration"
+            """Initialize CallbackTqdm with callback configuration"""
             user_cb = kwargs.pop('progress_callback', None)
             self._progress_callback = user_cb if user_cb is not None else default_cb
             self._min_update_interval = kwargs.pop('min_update_interval', min_update_interval)
@@ -44,7 +44,7 @@ def _make_callback_class(
             self,
             force: bool = False  # Bypass throttling and emit callback immediately
         ):
-            "Emit progress callback with current state if conditions are met"
+            """Emit progress callback with current state if conditions are met"""
             cb = self._progress_callback
             if cb is None:
                 return
@@ -96,13 +96,13 @@ def _make_callback_class(
                 self._done_emitted = True
     
         def display(self, *a, **k):
-            "Update display and emit progress callback"
+            """Update display and emit progress callback"""
             out = super().display(*a, **k)
             self._emit()
             return out
     
         def close(self):
-            "Close progress bar and emit final callback if needed"
+            """Close progress bar and emit final callback if needed"""
             try:
                 super().close()
             finally:
@@ -120,7 +120,7 @@ def patch_tqdm(
     min_delta_pct: float = 10.0,   # e.g., only every ~10%
     emit_initial: bool = False  # Whether to emit callback at 0% progress
 ): # Context manager that temporarily patches tqdm modules
-    "Context manager that patches tqdm to emit progress callbacks"
+    """Context manager that patches tqdm to emit progress callbacks"""
     modules = ['tqdm', 'tqdm.std', 'tqdm.auto', 'tqdm.notebook', 'tqdm.asyncio', 'tqdm.gui']
     originals, patched = {}, []
     try:

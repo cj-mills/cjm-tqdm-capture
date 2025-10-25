@@ -19,13 +19,7 @@ def sse_stream(
     wait_for_start: bool = True,  # Whether to wait for job to start before ending stream
     start_timeout: float = 5.0,  # Maximum seconds to wait for job to start if wait_for_start is True
 ) -> Iterator[str]:  # SSE-formatted strings ready to send to client
-    """
-    Framework-agnostic SSE generator.
-    - Yields 'data: {json}\\n\\n' when progress changes.
-    - Sends ': keep-alive' comments every `heartbeat` seconds when idle.
-    - If `wait_for_start` is True, it will wait up to `start_timeout` for
-      the first snapshot before ending (avoids race at job startup).
-    """
+    """Framework-agnostic SSE generator for streaming job progress"""
     last = None
     start_ts = time.time()
     last_hb = start_ts
@@ -83,13 +77,7 @@ async def sse_stream_async(
     wait_for_start: bool = True,  # Whether to wait for job to start before ending stream
     start_timeout: float = 5.0,  # Maximum seconds to wait for job to start if wait_for_start is True
 ) -> AsyncIterator[str]:  # SSE-formatted strings ready to send to client
-    """
-    Async version of SSE generator for frameworks that require async iteration.
-    - Yields 'data: {json}\\n\\n' when progress changes.
-    - Sends ': keep-alive' comments every `heartbeat` seconds when idle.
-    - If `wait_for_start` is True, it will wait up to `start_timeout` for
-      the first snapshot before ending (avoids race at job startup).
-    """
+    """Async version of SSE generator for streaming job progress"""
     last = None
     start_ts = time.time()
     last_hb = start_ts

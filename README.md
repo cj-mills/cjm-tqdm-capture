@@ -30,12 +30,12 @@ graph LR
     progress_monitor[progress_monitor<br/>progress monitor]
     streaming[streaming<br/>streaming]
 
-    job_runner --> patch_tqdm
     job_runner --> progress_info
     job_runner --> progress_monitor
+    job_runner --> patch_tqdm
     patch_tqdm --> progress_info
-    progress_monitor --> patch_tqdm
     progress_monitor --> progress_info
+    progress_monitor --> patch_tqdm
     streaming --> progress_monitor
     streaming --> job_runner
 ```
@@ -71,10 +71,7 @@ class JobRunner:
         self,
         monitor: ProgressMonitor  # Progress monitor instance to receive updates
     )
-    """
-    Runs a callable in a background thread, patches tqdm inside the job,
-    and forwards ProgressInfo updates to a ProgressMonitor under job_id.
-    """
+    "Runs functions in background threads with automatic tqdm progress capture"
     
     def __init__(
             self,
@@ -169,14 +166,14 @@ from cjm_tqdm_capture.progress_info import (
 def serialize_job_snapshot(
     snapshot: Optional[Dict[str, Any]]  # Job snapshot dictionary from ProgressMonitor
 ) -> Optional[Dict[str, Any]]:  # JSON-serializable dictionary or None if input is None
-    "Convert a job snapshot with ProgressInfo objects to a JSON-serializable format."
+    "Convert a job snapshot to JSON-serializable format"
 ```
 
 ``` python
 def serialize_all_jobs(
     jobs: Dict[str, Dict[str, Any]]  # Dictionary mapping job IDs to job snapshots
 ) -> Dict[str, Optional[Dict[str, Any]]]:  # Dictionary mapping job IDs to serialized snapshots
-    "Convert all jobs from monitor.all() to JSON-serializable format."
+    "Convert all jobs from monitor.all() to JSON-serializable format"
 ```
 
 #### Classes
@@ -285,13 +282,7 @@ def sse_stream(
     wait_for_start: bool = True,  # Whether to wait for job to start before ending stream
     start_timeout: float = 5.0,  # Maximum seconds to wait for job to start if wait_for_start is True
 ) -> Iterator[str]:  # SSE-formatted strings ready to send to client
-    """
-    Framework-agnostic SSE generator.
-    - Yields 'data: {json}\n\n' when progress changes.
-    - Sends ': keep-alive' comments every `heartbeat` seconds when idle.
-    - If `wait_for_start` is True, it will wait up to `start_timeout` for
-      the first snapshot before ending (avoids race at job startup).
-    """
+    "Framework-agnostic SSE generator for streaming job progress"
 ```
 
 ``` python
@@ -303,11 +294,5 @@ async def sse_stream_async(
     wait_for_start: bool = True,  # Whether to wait for job to start before ending stream
     start_timeout: float = 5.0,  # Maximum seconds to wait for job to start if wait_for_start is True
 ) -> AsyncIterator[str]:  # SSE-formatted strings ready to send to client
-    """
-    Async version of SSE generator for frameworks that require async iteration.
-    - Yields 'data: {json}\n\n' when progress changes.
-    - Sends ': keep-alive' comments every `heartbeat` seconds when idle.
-    - If `wait_for_start` is True, it will wait up to `start_timeout` for
-      the first snapshot before ending (avoids race at job startup).
-    """
+    "Async version of SSE generator for streaming job progress"
 ```
