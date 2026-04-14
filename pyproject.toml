@@ -1,3 +1,30 @@
 [build-system]
-requires = ["setuptools>=64.0"]
+requires = ["setuptools>=64"]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "cjm-tqdm-capture"
+dynamic = ["version"]
+description = "Intercept and capture progress information from tqdm progress bars via callbacks without modifying existing code."
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "Apache-2.0"}
+authors = [{name = "Christian J. Mills", email = "9126128+cj-mills@users.noreply.github.com"}]
+keywords = ['nbdev', 'jupyter', 'notebook', 'python']
+classifiers = ["Natural Language :: English", "Intended Audience :: Developers", "Development Status :: 3 - Alpha", "Programming Language :: Python :: 3", "Programming Language :: Python :: 3 :: Only"]
+dependencies = ['fastcore', 'tqdm']
+
+[project.urls]
+Repository = "https://github.com/cj-mills/cjm-tqdm-capture"
+Documentation = "https://cj-mills.github.io/cjm-tqdm-capture"
+
+[project.entry-points.nbdev]
+cjm_tqdm_capture = "cjm_tqdm_capture._modidx:d"
+
+[tool.setuptools.dynamic]
+version = {attr = "cjm_tqdm_capture.__version__"}
+
+[tool.setuptools.packages.find]
+include = ["cjm_tqdm_capture"]
+
+[tool.nbdev]
